@@ -11,6 +11,9 @@ public class Contact {
 
     }
 
+    public Contact(String name) {
+        this.name = name;
+    }
     public Contact(int id, String name, String mobile, String email) {
         this.id = id;
         this.name = name;
