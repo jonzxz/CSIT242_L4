@@ -15,11 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         final Button updateContact = (Button) findViewById(R.id.addContactBtn);
         final Button deleteContact = (Button) findViewById(R.id.deleteContactBtn);
         final Button searchContact = (Button) findViewById(R.id.searchContactBtn);
+        final Button showAll = (Button) findViewById(R.id.showAllBtn);
         allContactDisplay = (ListView) findViewById(R.id.allContactDisplay);
 
         adapter = new ArrayAdapter<String>(this, R.layout.listview_item_row, namesOfContacts);
@@ -206,6 +203,13 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        showAll.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                refreshList();
+            }
+        });
     }
 
     //Clears existing arraylist and replace with newly updated DB
@@ -222,15 +226,32 @@ public class MainActivity extends AppCompatActivity {
         }
         adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.listview_item_row, namesOfContacts);
         allContactDisplay.setAdapter(adapter);
+        allContactDisplay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ViewGroup viewGroup = findViewById(R.id.content);
+                final View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.result_contact_dialog, viewGroup, false);
+                EditText nameField = (EditText) dialogView.findViewById(R.id.resultNameField);
+                EditText mobileField = (EditText) dialogView.findViewById(R.id.resultMobileField);
+                EditText emailField = (EditText) dialogView.findViewById(R.id.resultEmailField);
+                nameField.setText(allContacts.get(position).getName());
+                mobileField.setText(allContacts.get(position).getMobile());
+                emailField.setText(allContacts.get(position).getEmail());
+                AlertDialog.Builder secBuilder = new AlertDialog.Builder(MainActivity.this);
+                secBuilder.setView(dialogView)
+                        .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog dialog = secBuilder.create();
+                dialog.show();
+            }
+        });
+
+
     }
 
 
-    private void showDeleteContactDialog() {
-
-
-    }
-
-    private void refreshAdapter(ArrayAdapter<String> adapter) {
-        adapter.notifyDataSetChanged();
-    }
 }

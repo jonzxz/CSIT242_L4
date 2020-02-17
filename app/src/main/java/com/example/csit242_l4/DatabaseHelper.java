@@ -85,7 +85,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Contact> searchContacts(String name) {
         ArrayList<Contact> contactsRetrieved = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = String.format("SELECT * FROM %s WHERE %s='%s'", TABLE_CONTACTS, KEY_NAME, name);
+        String query = String.format("SELECT * FROM %s WHERE %s LIKE '%s'", TABLE_CONTACTS, KEY_NAME, "%" + name + "%");
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {
             do {
