@@ -51,8 +51,24 @@ public class MainActivity extends AppCompatActivity {
         allContactDisplay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String text = allContacts.get(position).getName();
-                Log.d("CLICKED", text);
+                ViewGroup viewGroup = findViewById(R.id.content);
+                final View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.result_contact_dialog, viewGroup, false);
+                EditText nameField = (EditText) dialogView.findViewById(R.id.resultNameField);
+                EditText mobileField = (EditText) dialogView.findViewById(R.id.resultMobileField);
+                EditText emailField = (EditText) dialogView.findViewById(R.id.resultEmailField);
+                nameField.setText(allContacts.get(position).getName());
+                mobileField.setText(allContacts.get(position).getMobile());
+                emailField.setText(allContacts.get(position).getEmail());
+                AlertDialog.Builder secBuilder = new AlertDialog.Builder(MainActivity.this);
+                secBuilder.setView(dialogView)
+                        .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                AlertDialog dialog = secBuilder.create();
+                dialog.show();
             }
         });
 
@@ -77,10 +93,7 @@ public class MainActivity extends AppCompatActivity {
                                 String mobile = mobileInput.getText().toString();
                                 String email = emailInput.getText().toString();
                                 dbHelper.addContact(new Contact(name, mobile, email));
-
-
                                 refreshList();
-
 
                                 Log.d("ADDED", name);
                             }
@@ -127,6 +140,63 @@ public class MainActivity extends AppCompatActivity {
                                 refreshList();
                             }
                         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+        searchContact.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ViewGroup viewGroup = findViewById(R.id.content);
+                final View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.search_contact_dialog, viewGroup, false);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                builder.setView(dialogView)
+                        .setPositiveButton("Search", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        EditText searchNameField = (EditText) dialogView.findViewById(R.id.searchNameField);
+                        String name = searchNameField.getText().toString();
+
+                        final ArrayList<Contact> contactsFound = dbHelper.searchContacts(name);
+                        String[] contactsNames = new String[contactsFound.size()];
+                        for (int i = 0; i < contactsFound.size(); i++) {
+                            contactsNames[i] = contactsFound.get(i).getName();
+                        }
+
+                        adapter = new ArrayAdapter<String>(MainActivity.this, R.layout.listview_item_row, contactsNames);
+                        allContactDisplay.setAdapter(adapter);
+                        allContactDisplay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                final View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.result_contact_dialog, viewGroup, false);
+                                EditText nameField = (EditText) dialogView.findViewById(R.id.resultNameField);
+                                EditText mobileField = (EditText) dialogView.findViewById(R.id.resultMobileField);
+                                EditText emailField = (EditText) dialogView.findViewById(R.id.resultEmailField);
+                                nameField.setText(contactsFound.get(position).getName());
+                                mobileField.setText(contactsFound.get(position).getMobile());
+                                emailField.setText(contactsFound.get(position).getEmail());
+                                AlertDialog.Builder secBuilder = new AlertDialog.Builder(MainActivity.this);
+                                secBuilder.setView(dialogView)
+                                .setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                AlertDialog dialog = secBuilder.create();
+                                dialog.show();
+                            }
+                        });
+
+                    }
+                }).setNegativeButton("Close", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
