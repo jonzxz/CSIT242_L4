@@ -9,34 +9,83 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     public DatabaseHelper dbHelper = new DatabaseHelper(this);
+    ArrayList<Contact> allContacts;
+    String[] namesOfContacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        allContacts = dbHelper.getAllContacts();
+        namesOfContacts = new String[allContacts.size()];
 
-
+        for (int i = 0; i < allContacts.size(); i ++) {
+            namesOfContacts[i] = allContacts.get(i).getName();
+        }
 
         final Button addContact = (Button) findViewById(R.id.addContactBtn);
         final Button updateContact = (Button) findViewById(R.id.addContactBtn);
         final Button deleteContact = (Button) findViewById(R.id.deleteContactBtn);
         final Button searchContact = (Button) findViewById(R.id.searchContactBtn);
+        final ListView allContactDisplay = (ListView) findViewById(R.id.allContactDisplay);
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.listview_item_row, namesOfContacts);
+        allContactDisplay.setAdapter(adapter);
+        allContactDisplay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String text = allContacts.get(position).getName();
+                Log.d("CLICKED", text);
+            }
+        });
 
 
         addContact.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAddContactDialog();
+                ViewGroup viewGroup = findViewById(R.id.content);
+                final View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.add_contact_dialog, viewGroup, false);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                // Builder settings
+                builder.setView(dialogView)
+                        .setTitle("Add New Contact")
+                        .setPositiveButton("Add contact", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText nameInput = (EditText) dialogView.findViewById(R.id.name);
+                                EditText mobileInput = (EditText) dialogView.findViewById(R.id.mobile);
+                                EditText emailInput = (EditText) dialogView.findViewById(R.id.email);
+                                String name = nameInput.getText().toString();
+                                String mobile = mobileInput.getText().toString();
+                                String email = emailInput.getText().toString();
+                                dbHelper.addContact(new Contact(name, mobile, email));
+
+                                Log.d("ADDED", name);
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -68,6 +117,9 @@ public class MainActivity extends AppCompatActivity {
                 String mobile = mobileInput.getText().toString();
                 String email = emailInput.getText().toString();
                 dbHelper.addContact(new Contact(name, mobile, email));
+                
+
+
                 Log.d("ADDED", name);
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -87,9 +139,9 @@ public class MainActivity extends AppCompatActivity {
         final Spinner contactPicker = (Spinner) dialogView.findViewById(R.id.contactPicker);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        // Populate AL<String> contactNameString with names of Contact in AL<Contact> allContacts
-        ArrayList<Contact> allContacts = dbHelper.getAllContacts();
         ArrayList<String> contactNameString = new ArrayList<>();
+        ArrayList<Contact> allContacts = dbHelper.getAllContacts();
+
 
         for (Contact c : allContacts) {
             contactNameString.add(c.getName());
@@ -117,5 +169,9 @@ public class MainActivity extends AppCompatActivity {
         });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void refreshAdapter(ArrayAdapter<String> adapter) {
+        adapter.notifyDataSetChanged();
     }
 }
