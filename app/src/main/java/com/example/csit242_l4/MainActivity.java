@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         final Button addContact = (Button) findViewById(R.id.addContactBtn);
-        final Button updateContact = (Button) findViewById(R.id.addContactBtn);
+        final Button updateContact = (Button) findViewById(R.id.updateContactBtn);
         final Button deleteContact = (Button) findViewById(R.id.deleteContactBtn);
         final Button searchContact = (Button) findViewById(R.id.searchContactBtn);
         final Button showAll = (Button) findViewById(R.id.showAllBtn);
@@ -203,6 +203,15 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+
+        updateContact.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("t", "yoohoo");
+            }
+        });
+
 
         showAll.setOnClickListener(new Button.OnClickListener(){
             @Override
