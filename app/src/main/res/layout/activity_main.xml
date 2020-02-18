@@ -10,75 +10,50 @@
         android:id="@+id/addContactBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="61dp"
-        android:layout_marginTop="31dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="68dp"
         android:text="ADD"
-        app:layout_constraintBottom_toTopOf="@+id/showAllBtn"
-        app:layout_constraintEnd_toStartOf="@+id/updateContactBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/allContactDisplay" />
-
-    <Button
-        android:id="@+id/updateContactBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="31dp"
-        android:layout_marginEnd="11dp"
-        android:text="UPDATE"
-        app:layout_constraintBottom_toTopOf="@+id/searchContactBtn"
-        app:layout_constraintEnd_toStartOf="@+id/deleteContactBtn"
-        app:layout_constraintStart_toEndOf="@+id/addContactBtn"
-        app:layout_constraintTop_toBottomOf="@+id/allContactDisplay" />
-
-    <Button
-        android:id="@+id/searchContactBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="17dp"
-        android:layout_marginEnd="116dp"
-        android:layout_marginBottom="2dp"
-        android:text="@android:string/search_go"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/showAllBtn"
-        app:layout_constraintTop_toBottomOf="@+id/updateContactBtn" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/deleteContactBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="31dp"
-        android:layout_marginEnd="57dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="68dp"
         android:text="DELETE"
-        app:layout_constraintBottom_toTopOf="@+id/searchContactBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/updateContactBtn"
-        app:layout_constraintTop_toBottomOf="@+id/allContactDisplay" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/searchContactBtn" />
+
+    <Button
+        android:id="@+id/showAllBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:layout_marginBottom="68dp"
+        android:text="Show all"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/deleteContactBtn" />
+
+    <Button
+        android:id="@+id/searchContactBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="68dp"
+        android:text="@android:string/search_go"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addContactBtn" />
 
     <ListView
         android:id="@+id/allContactDisplay"
         android:layout_width="match_parent"
         android:layout_height="516dp"
         android:isScrollContainer="true"
+        app:layout_constraintBottom_toTopOf="@+id/addContactBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/showAllBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginBottom="2dp"
-        android:text="Show all"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/searchContactBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addContactBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

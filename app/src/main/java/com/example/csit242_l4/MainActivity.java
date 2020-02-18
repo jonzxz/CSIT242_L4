@@ -3,6 +3,7 @@ package com.example.csit242_l4;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         final Button addContact = (Button) findViewById(R.id.addContactBtn);
-        final Button updateContact = (Button) findViewById(R.id.updateContactBtn);
         final Button deleteContact = (Button) findViewById(R.id.deleteContactBtn);
         final Button searchContact = (Button) findViewById(R.id.searchContactBtn);
         final Button showAll = (Button) findViewById(R.id.showAllBtn);
@@ -53,11 +53,26 @@ public class MainActivity extends AppCompatActivity {
                 EditText nameField = (EditText) dialogView.findViewById(R.id.resultNameField);
                 EditText mobileField = (EditText) dialogView.findViewById(R.id.resultMobileField);
                 EditText emailField = (EditText) dialogView.findViewById(R.id.resultEmailField);
-                nameField.setText(allContacts.get(position).getName());
-                mobileField.setText(allContacts.get(position).getMobile());
-                emailField.setText(allContacts.get(position).getEmail());
+                final Contact selectedContact = allContacts.get(position);
+                nameField.setText(selectedContact.getName());
+                mobileField.setText(selectedContact.getMobile());
+                emailField.setText(selectedContact.getEmail());
                 AlertDialog.Builder secBuilder = new AlertDialog.Builder(MainActivity.this);
                 secBuilder.setView(dialogView)
+                        .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String name = ((EditText) dialogView.findViewById(R.id.resultNameField)).getText().toString();
+                                String mobile = ((EditText) dialogView.findViewById(R.id.resultMobileField)).getText().toString();
+                                String email = ((EditText) dialogView.findViewById(R.id.resultEmailField)).getText().toString();
+                                ContentValues values = new ContentValues();
+                                values.put("name", name);
+                                values.put("mobile", mobile);
+                                values.put("email", email);
+                                dbHelper.updateContact(String.valueOf(selectedContact.getID()), values);
+                                refreshList();
+                            }
+                        })
                         .setNegativeButton("Close", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -176,11 +191,26 @@ public class MainActivity extends AppCompatActivity {
                                 EditText nameField = (EditText) dialogView.findViewById(R.id.resultNameField);
                                 EditText mobileField = (EditText) dialogView.findViewById(R.id.resultMobileField);
                                 EditText emailField = (EditText) dialogView.findViewById(R.id.resultEmailField);
+                                final Contact selectedContact = contactsFound.get(position);
                                 nameField.setText(contactsFound.get(position).getName());
                                 mobileField.setText(contactsFound.get(position).getMobile());
                                 emailField.setText(contactsFound.get(position).getEmail());
                                 AlertDialog.Builder secBuilder = new AlertDialog.Builder(MainActivity.this);
                                 secBuilder.setView(dialogView)
+                                        .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                String name = ((EditText) dialogView.findViewById(R.id.resultNameField)).getText().toString();
+                                                String mobile = ((EditText) dialogView.findViewById(R.id.resultMobileField)).getText().toString();
+                                                String email = ((EditText) dialogView.findViewById(R.id.resultEmailField)).getText().toString();
+                                                ContentValues values = new ContentValues();
+                                                values.put("name", name);
+                                                values.put("mobile", mobile);
+                                                values.put("email", email);
+                                                dbHelper.updateContact(String.valueOf(selectedContact.getID()), values);
+                                                refreshList();
+                                            }
+                                        })
                                 .setNegativeButton("Close", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
@@ -204,13 +234,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        updateContact.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("t", "yoohoo");
-            }
-        });
 
 
         showAll.setOnClickListener(new Button.OnClickListener(){
@@ -243,11 +266,26 @@ public class MainActivity extends AppCompatActivity {
                 EditText nameField = (EditText) dialogView.findViewById(R.id.resultNameField);
                 EditText mobileField = (EditText) dialogView.findViewById(R.id.resultMobileField);
                 EditText emailField = (EditText) dialogView.findViewById(R.id.resultEmailField);
+                final Contact selectedContact = allContacts.get(position);
                 nameField.setText(allContacts.get(position).getName());
                 mobileField.setText(allContacts.get(position).getMobile());
                 emailField.setText(allContacts.get(position).getEmail());
                 AlertDialog.Builder secBuilder = new AlertDialog.Builder(MainActivity.this);
                 secBuilder.setView(dialogView)
+                        .setPositiveButton("Update", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String name = ((EditText) dialogView.findViewById(R.id.resultNameField)).getText().toString();
+                                String mobile = ((EditText) dialogView.findViewById(R.id.resultMobileField)).getText().toString();
+                                String email = ((EditText) dialogView.findViewById(R.id.resultEmailField)).getText().toString();
+                                ContentValues values = new ContentValues();
+                                values.put("name", name);
+                                values.put("mobile", mobile);
+                                values.put("email", email);
+                                dbHelper.updateContact(String.valueOf(selectedContact.getID()), values);
+                                refreshList();
+                            }
+                        })
                         .setNegativeButton("Close", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

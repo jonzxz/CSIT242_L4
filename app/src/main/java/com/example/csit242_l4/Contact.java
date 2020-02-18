@@ -11,6 +11,13 @@ public class Contact {
 
     }
 
+    public Contact(Contact c) {
+        this.id = c.id;
+        this.name = c.name;
+        this.mobile = c.mobile;
+        this.email = c.email;
+    }
+
     public Contact(String name) {
         this.name = name;
     }

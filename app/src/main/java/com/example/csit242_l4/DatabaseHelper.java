@@ -67,11 +67,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    //    public int updateContact(com.example.csit242_l4.Contact c) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        valu
-//    }
 
     // delete contact
     public void deleteContact(Contact c) {
@@ -99,5 +94,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return contactsRetrieved;
     }
+
+    public void updateContact(String id, ContentValues values) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(TABLE_CONTACTS, values, "id = ?", new String[] { id });
+
+    }
+
+
 
 }
